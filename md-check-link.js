@@ -35,6 +35,7 @@ function checkMailTo(link, opts) {
 async function checkLink(link, opts, attempts = 0) {
     let retryOn429 = opts.retryOn429 || false;
     let retryCount = opts.retryCount || 2;
+    const backoffTimeout = 60000
     const url = link;
     try {
         let res = await fetch(url, { method: 'HEAD', headers: opts.headers, signal: AbortSignal.timeout(opts.timeout) })
@@ -43,12 +44,14 @@ async function checkLink(link, opts, attempts = 0) {
         } else {
             if (res.status === 429) {
                 if (attempts >= retryCount || !retryOn429) {
+                    console.log('429 error for %s, giving up', link);
                     return 'dead'
                 }
+                console.log('429 error for %s, retrying in %s seconds', link, backoffTimeout / 1000);
                 return await new Promise((resolve, reject) => {
                     setTimeout(function () {
                         resolve(checkLink(link, opts, attempts + 1));
-                    }, 15000)
+                    }, backoffTimeout);
                 })
             }
             else {
