@@ -45,9 +45,9 @@ async function checkLink(link, opts, attempts = 0) {
             if (res.status === 429) {
                 if (attempts >= retryCount || !retryOn429) {
                     console.log('429 error for %s, giving up', link);
-                    return 'dead'
+                    return opts.warnOnlyOn429 ? 'warn': 'dead'
                 }
-                console.log('429 error for %s, retrying in %s seconds', link, backoffTimeout / 1000);
+                console.log('429 error for %s, retry no %d in %s seconds', link, attempts + 1, backoffTimeout / 1000);
                 return await new Promise((resolve, reject) => {
                     setTimeout(function () {
                         resolve(checkLink(link, opts, attempts + 1));
@@ -217,26 +217,36 @@ class LinkChecker {
             alive: chalk.green('✓'),
             dead: chalk.red('✖'),
             ignored: chalk.yellow('⚠'),
+            warn: chalk.yellow('⚠'),
         };
         let count = 0;
         let deadCount = 0;
+        let warnCount = 0;
         for (let filename of this.files.keys()) {
             let file = this.files.get(filename);
             let deadLinks = []
+            let warnLinks = []
             for (let entry of file.links) {
                 count++;
                 if (entry.status === 'dead') {
                     deadCount++;
                     deadLinks.push(entry);
                 }
+                if (entry.status === 'warn') {
+                    warnCount++;
+                    warnLinks.push(entry);
+                }
             }
-            if (deadLinks.length > 0) {
-                console.log(chalk.red('\nERROR: %s dead links found in %s !'), deadLinks.length, path.relative(this.options.basePath, filename));
+            if (deadLinks.length > 0 || warnLinks.length > 0) {
+                console.log(chalk.red('\nERROR: %s dead links found in %s !'), deadLinks.length+warnLinks.length, path.relative(this.options.basePath, filename));
             } else if (!this.options.quiet) {
                 console.log(chalk.green('\nNo dead links found in %s'), path.relative(this.options.basePath, filename));
             }
             if (this.options.quiet) {
                 deadLinks.forEach(function (result) {
+                    console.log('  [%s] %s', statusLabels[result.status], result.link);
+                });
+                warnLinks.forEach(function (result) {
                     console.log('  [%s] %s', statusLabels[result.status], result.link);
                 });
             } else {
@@ -245,7 +255,7 @@ class LinkChecker {
                 }
             }
         }
-        console.log('%s links checked, %s dead links found', count, deadCount);
+        console.log('%s links checked, %s dead links found, %d rate limited links', count, deadCount, warnCount);
         return deadCount;
     }
 }
@@ -297,6 +307,7 @@ program
             }
             opts.ignoreDisable = config.ignoreDisable;
             opts.retryOn429 = config.retryOn429;
+            opts.warnOnlyOn429 = config.warnOnlyOn429;
             opts.retryCount = config.retryCount;
             opts.parallel = opts.parallel || config.parallel;
             if (typeof opts.parallel === 'string') {
