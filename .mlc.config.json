@@ -138,6 +138,10 @@
     {
       "pattern": "^/docker-registry/",
       "replacement": "https://raw.githubusercontent.com/kyma-project/docker-registry/main/docs/"
+    },
+    {
+      "pattern": "^/busola/",
+      "replacement": "https://raw.githubusercontent.com/kyma-project/busola/main/docs/"
     }
 
   ],

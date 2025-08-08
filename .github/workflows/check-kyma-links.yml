@@ -23,6 +23,7 @@ jobs:
           - community
           - cloud-manager
           - docker-registry
+          - busola
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
