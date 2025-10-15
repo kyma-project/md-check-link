@@ -24,6 +24,7 @@ jobs:
           - cloud-manager
           - docker-registry
           - busola
+          - registry-proxy
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

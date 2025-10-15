@@ -145,6 +145,10 @@
     {
       "pattern": "^/busola/",
       "replacement": "https://raw.githubusercontent.com/kyma-project/busola/main/docs/"
+    },
+    {
+      "pattern": "^/registry-proxy/",
+      "replacement": "https://raw.githubusercontent.com/kyma-project/registry-proxy/main/docs/"
     }
 
   ],
