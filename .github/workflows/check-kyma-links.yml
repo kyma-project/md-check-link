@@ -25,6 +25,7 @@ jobs:
           - docker-registry
           - busola
           - registry-proxy
+          - community-modules
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
