@@ -55,7 +55,7 @@
     },
     {
       "docsify": true,
-      "pattern" : "https://kyma-project.io/#/serverless-manager/",
+      "pattern" : "https://kyma-project.io/#/serverless/",
       "replacement": "https://raw.githubusercontent.com/kyma-project/serverless/main/docs/"
     },
     {
@@ -126,7 +126,7 @@
       "replacement": "https://raw.githubusercontent.com/kyma-project/keda-manager/main/docs/"
     },
     {
-      "pattern" : "^/serverless-manager/",
+      "pattern" : "^/serverless/",
       "replacement": "https://raw.githubusercontent.com/kyma-project/serverless/main/docs/"
     },
     {
