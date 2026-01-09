@@ -35,6 +35,9 @@
     },
     {
       "pattern": "https://www.npmjs.com/"
+    },
+    {
+      "pattern": "https://help.sap.com/"
     }
   ],
   "replacementPatterns": [
