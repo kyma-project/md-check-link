@@ -38,6 +38,9 @@
     },
     {
       "pattern": "https://help.sap.com/"
+    },
+    {
+      "pattern": "https://community.sap.com/"
     }
   ],
   "replacementPatterns": [
