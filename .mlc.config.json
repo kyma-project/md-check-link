@@ -41,6 +41,9 @@
     },
     {
       "pattern": "https://community.sap.com/"
+    },
+    {
+      "pattern": "https://blog.sap.com/"
     }
   ],
   "replacementPatterns": [
